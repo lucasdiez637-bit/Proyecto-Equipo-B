@@ -1,4 +1,4 @@
-import "./payment.css";
+import "./Payment.css";
 function payment() {
   return (
     <section id="payment" className="payment-container">
@@ -52,7 +52,7 @@ function payment() {
               </button>
             </div>
           </div>
-          
+
         </div>
       </div>
     </section>
