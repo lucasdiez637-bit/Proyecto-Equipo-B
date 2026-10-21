@@ -1,4 +1,4 @@
-import Payment from './assets/components/payment-gateway/Payment';
+import Payment from './assets/components/Payment-Gateway/payment';
 import './App.css'
 
 function App() {
