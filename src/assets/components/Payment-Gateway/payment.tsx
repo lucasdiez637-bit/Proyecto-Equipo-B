@@ -52,6 +52,7 @@ function payment() {
               </button>
             </div>
           </div>
+          
         </div>
       </div>
     </section>
