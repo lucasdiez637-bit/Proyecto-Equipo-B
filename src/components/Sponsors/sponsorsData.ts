@@ -1,18 +1,18 @@
-import googleCloud from "../../../Sponsors/google-cloud.svg";
-import aws from "../../../Sponsors/aws.svg";
-import mercadoLibre from "../../../Sponsors/mercado-libre.svg";
-import microsoftAzure from "../../../Sponsors/microsoft-azure.svg";
-import github from "../../../Sponsors/github.svg";
-import globant from "../../../Sponsors/globant.svg";
-import auth0 from "../../../Sponsors/auth0.svg";
-import vercel from "../../../Sponsors/vercel.svg";
-import supabase from "../../../Sponsors/supabase.svg";
-import digitalocean from "../../../Sponsors/digitalocean.svg";
-import cloudflare from "../../../Sponsors/cloudflare.svg";
-import mongodb from "../../../Sponsors/mongodb.svg";
-import docker from "../../../Sponsors/docker.svg";
-import stripe from "../../../Sponsors/stripe.svg";
-import postman from "../../../Sponsors/postman.svg";
+import googleCloud from "../../../src/Sponsors/google-cloud.svg";
+import aws from "../../../src/Sponsors/aws.svg";
+import mercadoLibre from "../../../src/Sponsors/mercado-libre.svg";
+import microsoftAzure from "../../../src/Sponsors/microsoft-azure.svg";
+import github from "../../../src/Sponsors/github.svg";
+import globant from "../../../src/Sponsors/globant.svg";
+import auth0 from "../../../src/Sponsors/auth0.svg";
+import vercel from "../../../src/Sponsors/vercel.svg";
+import supabase from "../../../src/Sponsors/supabase.svg";
+import digitalocean from "../../../src/Sponsors/digitalocean.svg";
+import cloudflare from "../../../src/Sponsors/cloudflare.svg";
+import mongodb from "../../../src/Sponsors/mongodb.svg";
+import docker from "../../../src/Sponsors/docker.svg";
+import stripe from "../../../src/Sponsors/stripe.svg";
+import postman from "../../../src/Sponsors/postman.svg";
 
 export type AreaIcon = "cpu" | "server" | "card";
 
