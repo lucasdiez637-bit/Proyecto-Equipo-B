@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const SPONSOR_LEVELS = ["Oro", "Plata", "Bronce"] as const;
+export const SPONSOR_LEVELS = ["Diamante", "Oro", "Bronce"] as const;
 
 export const LOGO_TYPES = ["image/png", "image/svg+xml", "image/jpeg", "image/webp"];
 export const LOGO_MAX_SIZE = 5 * 1024 * 1024;
