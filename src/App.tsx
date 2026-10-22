@@ -1,18 +1,24 @@
-import Metrics from './assets/components/Metrics/metricas';
-import Payment from './assets/components/Payment-Gateway/payment';
-import Sponsors from './assets/components/Sponsors/sponsors';
+
 import './App.css'
-import Sponsor from './assets/components/Sponsor/sponsor';
-import Agenda from './assets/components/Calendar/Calendar';
+import Calendar from './components/Calendar/Calendar'
+import Metrics from './components/Metrics/metricas'
+import Payment from './components/Payment-Gateway/payment'
+import Sponsor from './components/Sponsor/sponsor'
+import Sponsors from './components/Sponsors/sponsors'
+
 
 function App() {
   return (
     <>
+
+    
     <Metrics />
-    <Agenda/>
+    < Calendar />
     <Payment />
     <Sponsor/>
     <Sponsors />
+
+
     </>
   );
 }
