@@ -170,3 +170,17 @@
     padding: 24px;
   }
 }
+@media (max-width: 575px) {
+  .hero-block { padding: 20px; gap: 24px; }
+  .hero-tag { font-size: 18px; }
+  .hero-description { font-size: 18px; }
+  .hero-buttons .btn-hero {
+    flex: 1 1 100%;
+  }
+  .hero-card { padding: 20px; gap: 20px; }
+  .hero-data { gap: 12px; padding-bottom: 20px; }
+  .hero-data svg { width: 32px; height: 32px; }
+  .hero-data strong { font-size: 20px; }
+  .hero-data span { font-size: 16px; }
+  .hero-time { font-size: 26px !important; }
+}
