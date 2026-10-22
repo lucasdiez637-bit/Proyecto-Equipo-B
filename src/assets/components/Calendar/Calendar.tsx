@@ -1,4 +1,4 @@
-import "./agenda.css";
+import "./Calendar.css";
 const TALKS = [
   { time: "18:00", topic: "Acreditación y bienvenida" },
   { time: "18:20", topic: "Tu primer día como developer", speaker: "Daniela Cardozo" },
@@ -13,7 +13,7 @@ const TALKS = [
   { time: "21:20", topic: "Tu primera base de datos", speaker: "Andres Perlo" },
   { time: "21:40", topic: "Preguntas y networking" },
 ];
-function Agenda() {
+function Calendar() {
   return (
     <section id="agenda" className="agenda">
       <div className="agenda-container row g-4">
@@ -48,4 +48,4 @@ function Agenda() {
     </section>
   );
 }
-export default Agenda;
+export default Calendar;
