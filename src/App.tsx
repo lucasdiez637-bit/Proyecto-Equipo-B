@@ -5,6 +5,7 @@ import Metrics from './components/Metrics/metricas'
 import Payment from './components/Payment-Gateway/payment'
 import Sponsor from './components/Sponsor/sponsor'
 import Sponsors from './components/Sponsors/sponsors'
+import Timer from './components/timer/Timer'
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
     
     <Metrics />
     < Calendar />
+    <Timer />
     <Payment />
     <Sponsor/>
     <Sponsors />
