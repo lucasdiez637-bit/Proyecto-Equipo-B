@@ -21,7 +21,12 @@ const ENTRADAS = [
   },
 ];
 function pesos(n: number) {
-  return "$" + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return (
+    "$" +
+    Math.round(n)
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+  );
 }
 function Payment() {
   const [entradaId, setEntradaId] = useState("early");
@@ -31,7 +36,7 @@ function Payment() {
   const cargo = subtotal * 0.05;
   const total = subtotal + cargo;
   return (
-    <section id="checkout" className="payment-seccion">
+    <section id="checkout" className="payment-container">
       <div className="payment-block">
         <header className="payment-header">
           <div>
@@ -40,15 +45,13 @@ function Payment() {
           </div>
 
           <ol className="payment-pasos" aria-label="Pasos de la compra">
-            <li className="payment-paso negrita">1 Entrada</li>
+            <li className="payment-paso actual">1 Entrada</li>
             <li className="payment-paso">2 Datos</li>
             <li className="payment-paso">3 Pago</li>
             <li className="payment-paso">4 Listo</li>
           </ol>
         </header>
-
         <div className="row g-4 align-items-start">
-          {/* IZQUIERDA: tarjeta blanca */}
           <div className="col-lg-7">
             <div className="payment-h3">
               <h3>Elegí tu entrada</h3>
@@ -56,7 +59,11 @@ function Payment() {
               {ENTRADAS.map((e) => (
                 <label
                   key={e.id}
-                  className={e.id === entradaId ? "payment-opcion negrita" : "payment-opcion"}
+                  className={
+                    e.id === entradaId
+                      ? "payment-opcion negrita"
+                      : "payment-opcion"
+                  }
                 >
                   <input
                     type="radio"
@@ -86,29 +93,33 @@ function Payment() {
                   <button
                     type="button"
                     aria-label="Agregar una entrada"
-                    onClick={() => setCantidad(cantidad + 1)}
+                    onClick={() => setCantidad(Math.min(10, cantidad + 1))}
                   >
                     +
                   </button>
                 </div>
               </div>
-
               <button type="button" className="payment-continuar">
                 Continuar
               </button>
+              <p className="payment-nota">
+                Pasarela de pago de ejemplo: no se procesan pagos ni se guardan
+                datos.
+              </p>
             </div>
           </div>
-
-          {/* DERECHA: caja negra */}
           <div className="col-lg-5">
             <aside className="payment-resume">
               <p className="payment-etiqueta">Tu pedido</p>
               <h3>Workshop Rolling Code School</h3>
-              <p className="payment-gris">Jueves 19/11 · 18:00 hs · Gral. Paz 576</p>
+              <p className="payment-gris">
+                Jueves 19/11 · 18:00 hs · Gral. Paz 576
+              </p>
 
               <div className="payment-fila">
                 <span>
-                  {cantidad} {cantidad === 1 ? "entrada" : "entradas"} {entrada.nombre}
+                  {cantidad} {cantidad === 1 ? "entrada" : "entradas"}{" "}
+                  {entrada.nombre}
                 </span>
                 <span>{pesos(subtotal)}</span>
               </div>
@@ -122,8 +133,17 @@ function Payment() {
               </div>
 
               <p className="payment-seguro">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
                   <rect x="5" y="11" width="14" height="9" rx="2" />
                   <path d="M8 11V8a4 4 0 018 0v3" />
                 </svg>
