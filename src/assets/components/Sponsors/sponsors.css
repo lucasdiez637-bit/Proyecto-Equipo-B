@@ -1,0 +1,261 @@
+.sponsors {
+  background: var(--rc-black);
+  color: var(--rc-white);
+  padding: 96px 24px;
+  overflow-x: hidden;
+}
+.sponsors-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 72px;
+}
+.sponsors-tier--diamond { --tier: var(--rc-red); }
+.sponsors-tier--gold { --tier: #f2c14e; }
+.sponsors-tier--bronze { --tier: #e0913f; }
+
+.sponsors-tier-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.sponsors-tier-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid color-mix(in srgb, var(--tier) 45%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--tier) 12%, transparent);
+  color: var(--tier);
+}
+.sponsors-tier-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 4px;
+  color: var(--tier);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.sponsors-tier-badge {
+  padding: 4px 10px;
+  border: 1px solid color-mix(in srgb, var(--tier) 45%, transparent);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--tier) 14%, transparent);
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+.sponsors-tier-description {
+  margin: 0;
+  color: var(--rc-text-soft);
+  font-size: 16px;
+}
+
+.sponsors-list {
+  list-style: none;
+  padding: 0;
+}
+.sponsors-list > li {
+  display: flex;
+}
+.sponsors-list article {
+  width: 100%;
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+.sponsors-list article:hover {
+  transform: translateY(-4px);
+  border-color: var(--tier);
+  box-shadow: 0 16px 40px -12px color-mix(in srgb, var(--tier) 45%, transparent);
+}
+
+.sponsors-logo {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--rc-border);
+  border-radius: 14px;
+  background: var(--rc-surface-2);
+}
+.sponsors-logo img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+}
+.sponsors-logo--lg {
+  width: 112px;
+  height: 112px;
+  border-radius: 20px;
+}
+.sponsors-logo--sm {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+}
+
+.sponsors-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px;
+  border: 2px solid color-mix(in srgb, var(--tier) 40%, var(--rc-border));
+  border-radius: 32px;
+  background: linear-gradient(180deg, var(--rc-surface-2) 0%, var(--rc-surface) 45%);
+  text-align: center;
+}
+.sponsors-main.destacado,
+.sponsors-main.destacado:hover {
+  border: 3px solid transparent;
+  background:
+    linear-gradient(180deg, var(--rc-surface-2) 0%, var(--rc-surface) 45%) padding-box,
+    linear-gradient(180deg, var(--rc-red) 0%, #f2c14e 100%) border-box;
+}
+.sponsors-main-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 32px;
+}
+.sponsors-category {
+  padding: 6px 14px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: left;
+}
+.sponsors-link {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--rc-border);
+  border-radius: 50%;
+  color: var(--rc-text-soft);
+  transition: background 0.2s, color 0.2s;
+}
+.sponsors-link:hover,
+.sponsors-link:focus-visible {
+  background: var(--rc-white);
+  color: var(--rc-black);
+}
+.sponsors-main-name {
+  margin: 28px 0 12px;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+.sponsors-main-description {
+  margin: 0 0 24px;
+  color: var(--rc-text-mute);
+  font-size: 15px;
+  line-height: 1.6;
+}
+.sponsors-main-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--rc-border);
+}
+.sponsors-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+.sponsors-area svg {
+  color: var(--accent);
+}
+.sponsors-highlight {
+  color: var(--accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.sponsors-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid color-mix(in srgb, var(--tier) 30%, var(--rc-border));
+  background: var(--rc-surface);
+  text-align: center;
+}
+.sponsors-card--md {
+  padding: 24px 16px;
+  border-radius: 20px;
+}
+.sponsors-card--sm {
+  padding: 18px 10px;
+  border-radius: 16px;
+}
+.sponsors-card .sponsors-logo {
+  margin-bottom: 12px;
+}
+.sponsors-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+}
+.sponsors-card--sm .sponsors-name {
+  font-size: 16px;
+}
+.sponsors-specialty {
+  margin: 0;
+  color: var(--rc-text-mute);
+  font-size: 14px;
+}
+.sponsors-card--sm .sponsors-specialty {
+  font-size: 13px;
+}
+.sponsors-tag {
+  margin-top: 12px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent, var(--tier)) 16%, transparent);
+  color: var(--accent, var(--tier));
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Bootstrap no tiene row-cols-7, por eso el nivel bronce usa CSS grid */
+.sponsors-bronze-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+}
+
+@media (max-width: 1199px) {
+  .sponsors-bronze-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (max-width: 767px) {
+  .sponsors { padding: 56px 16px; }
+  .sponsors-container { gap: 56px; }
+  .sponsors-tier-title { font-size: 18px; }
+  .sponsors-tier-description { font-size: 14px; }
+  .sponsors-main { padding: 24px; border-radius: 28px; }
+  .sponsors-main-name { font-size: 26px; }
+  .sponsors-bronze-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+}
