@@ -8,6 +8,7 @@ import Navbar from './components/Navbar/Navbar';
 import Payment from './components/Payment-Gateway/payment';
 import Sponsor from './components/Sponsor/sponsor';
 import Sponsors from './components/Sponsors/sponsors';
+import Tickets from './components/tickets/Tickets';
 import Timer from './components/timer/Timer';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
     <Metrics />
     <Calendar />
     <Timer />
+    <Tickets />
     <Payment />
     <Sponsor/>
     <Sponsors />
