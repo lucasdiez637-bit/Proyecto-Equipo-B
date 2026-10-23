@@ -1,6 +1,6 @@
 import { useState } from "react";
 import logo from "../../Logo/logo-rolling-blanco.png";
-import "./Navbar.css";
+import "./navbar.css";
 const navigationLinks = [
   { href: "#speakers", label: "Speakers" },
   { href: "#agenda", label: "Agenda" },

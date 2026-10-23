@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Payment.css";
+import "./payment.css";
 const ENTRADAS = [
   {
     id: "early",
