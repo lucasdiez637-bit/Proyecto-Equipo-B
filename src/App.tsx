@@ -1,9 +1,9 @@
 import './App.css'
 import Calendar from './components/Calendar/Calendar';
 import Chatbot from './components/Chatbot/Chatbot';
-import Hero from './components/hero/Hero';
+import Hero from './components/Hero/Hero';
 import Metrics from './components/Metrics/metricas';
-import Navbar from './components/navbar/navbar';
+import Navbar from './components/Navbar/Navbar';
 import Payment from './components/Payment-Gateway/payment';
 import Sponsor from './components/Sponsor/sponsor';
 import Sponsors from './components/Sponsors/sponsors';
