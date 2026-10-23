@@ -1,11 +1,11 @@
 import "./Footer.css";
 import logo from "../../Logo/logo-rolling-blanco.png";
 import instagramIcon from "../../Icons/instagram.svg";
-import facebookIcon from "../../icons/facebook.svg";
-import linkedinIcon from "../../icons/linkedin.svg";
-import youtubeIcon from "../../icons/youtube.svg";
-import xIcon from "../../icons/x.svg";
-import githubIcon from "../../icons/github.svg";
+import facebookIcon from "../../Icons/facebook.svg";
+import linkedinIcon from "../../Icons/linkedin.svg";
+import youtubeIcon from "../../Icons/youtube.svg";
+import xIcon from "../../Icons/x.svg";
+import githubIcon from "../../Icons/github.svg";
 const socialLinks = [
   { id: "instagram", name: "Instagram", icon: instagramIcon },
   { id: "facebook", name: "Facebook", icon: facebookIcon },
