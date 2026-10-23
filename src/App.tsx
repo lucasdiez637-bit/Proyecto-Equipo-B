@@ -1,4 +1,3 @@
-
 import './App.css'
 import './components/hero/Hero'
 import Calendar from './components/Calendar/Calendar'
@@ -8,19 +7,18 @@ import Sponsor from './components/Sponsor/sponsor'
 import Sponsors from './components/Sponsors/sponsors'
 import Timer from './components/timer/Timer'
 import Hero from './components/hero/Hero'
+import Navbar from './components/navbar/Navbar'
 function App() {
   return (
     <>
-
+    <Navbar />
     <Hero />
     <Metrics />
-    < Calendar />
+    <Calendar />
     <Timer />
     <Payment />
     <Sponsor/>
     <Sponsors />
-
-
     </>
   );
 }
