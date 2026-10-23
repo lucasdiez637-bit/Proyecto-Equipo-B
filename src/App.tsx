@@ -2,6 +2,7 @@ import './App.css'
 import Calendar from './components/Calendar/Calendar';
 import Chatbot from './components/Chatbot/Chatbot';
 import Contact from './components/Contact/Contact';
+import Footer from './components/footer/Footer';
 import Hero from './components/Hero/Hero';
 import Metrics from './components/Metrics/metricas';
 import Navbar from './components/Navbar/Navbar';
@@ -26,6 +27,7 @@ function App() {
     <Sponsor/>
     <Sponsors />
     <Contact/>
+    <Footer />
     <Chatbot/>
     </>
   );
