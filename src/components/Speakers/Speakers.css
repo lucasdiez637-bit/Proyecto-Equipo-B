@@ -1,0 +1,142 @@
+.speakers {
+  padding: 96px 24px 0;
+
+  background-color: var(--rc-black);
+  color: var(--rc-white);
+  font-family: var(--bs-body-font-family);
+}
+
+.speakers,
+.speakers * {
+  box-sizing: border-box;
+}
+
+.speakers__container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+.speakers__header {
+  margin-bottom: 32px;
+}
+
+.speakers__eyebrow {
+  margin: 0 0 12px;
+
+  color: var(--rc-red);
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.speakers__title {
+  margin: 0;
+
+  color: var(--rc-white);
+  font-family: inherit;
+  font-size: clamp(34px, 4.5vw, 56px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -1px;
+}
+
+.speakers__grid > .col {
+  display: flex;
+}
+
+.speaker-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  min-width: 0;
+  padding: 16px;
+
+  background-color: var(--rc-surface);
+  border: 1px solid var(--rc-border);
+  border-radius: 32px;
+
+  transition: transform 0.3s ease;
+}
+
+.speaker-card__image {
+  display: block;
+
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+
+  object-fit: cover;
+  object-position: center;
+
+  background-color: var(--rc-surface-2);
+  border-radius: 18px;
+}
+
+.speaker-card__name {
+  margin: 16px 0 8px;
+
+  color: var(--rc-white);
+  font-family: inherit;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+  overflow-wrap: break-word;
+}
+
+.speaker-card__talk {
+  display: flex;
+  align-items: center;
+
+  min-height: 52px;
+  margin: 0;
+  padding: 8px 12px;
+
+  background-color: var(--rc-surface-2);
+  color: var(--rc-white);
+  border-radius: 18px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+
+  transition: background-color 0.3s ease;
+}
+
+.speaker-card__description {
+  margin: 16px 0 0;
+
+  color: var(--rc-text-soft);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+
+@media (hover: hover) and (pointer: fine) {
+  .speaker-card:hover {
+    transform: scale(1.03);
+    z-index: 1;
+  }
+
+  .speaker-card:hover .speaker-card__talk {
+    background-color: var(--rc-red);
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .speaker-card,
+  .speaker-card__talk {
+    transition: none;
+  }
+
+  .speaker-card:hover {
+    transform: none;
+  }
+}
