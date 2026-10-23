@@ -1,42 +1,107 @@
-import { useState } from "react";
-import "./payment.css";
-const ENTRADAS = [
-  {
-    id: "early",
-    nombre: "Early Bird",
-    detalle: "Presencial · hasta el 31/10",
-    precio: 25000,
-  },
-  {
-    id: "general",
-    nombre: "General",
-    detalle: "Presencial · desde el 1/11",
-    precio: 35000,
-  },
-  {
-    id: "virtual",
-    nombre: "Virtual",
-    detalle: "Transmisión en vivo y grabación",
-    precio: 15000,
-  },
-];
-function pesos(n: number) {
-  return (
-    "$" +
-    Math.round(n)
-      .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-  );
-}
+import { useEffect, useRef, useState } from 'react';
+import './payment.css';
+import StepIndicator from './StepIndicator';
+import StepTicket from './StepTicket';
+import StepBuyer from './StepBuyer';
+import StepPayment from './StepPayment';
+import Receipt from './Receipt';
+import OrderSummary from './OrderSummary';
+import { ENTRADAS, calcularPedido } from './ticketsData';
+import type { Buyer, Order, StepNumber, SummaryData, Ticket } from './types';
+
+const STORAGE_KEY = 'payment-last-order';
+const EMPTY_TICKET: Ticket = { id: ENTRADAS[0]?.id ?? '', quantity: 1 };
+const EMPTY_BUYER: Buyer = { name: '', email: '', phone: '' };
+
+// Recupera el último comprobante si el usuario refresca la página en el paso 4
+const loadOrder = (): Order | null => {
+  try {
+    const raw = sessionStorage.getItem(STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as Order) : null;
+  } catch {
+    return null;
+  }
+};
+
+const saveOrder = (order: Order | null) => {
+  try {
+    if (order) sessionStorage.setItem(STORAGE_KEY, JSON.stringify(order));
+    else sessionStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // Si el navegador bloquea el almacenamiento, la compra sigue funcionando
+  }
+};
+
+const summaryFromTicket = (ticket: Ticket): SummaryData => {
+  const { entrada, subtotal, cargo, total } = calcularPedido(ticket.id, ticket.quantity);
+  return { ticketName: entrada.nombre, quantity: ticket.quantity, subtotal, cargo, total };
+};
+
 function Payment() {
-  const [entradaId, setEntradaId] = useState("early");
-  const [cantidad, setCantidad] = useState(1);
-  const entrada = ENTRADAS.find((e) => e.id === entradaId) ?? ENTRADAS[0];
-  const subtotal = entrada.precio * cantidad;
-  const cargo = subtotal * 0.05;
-  const total = subtotal + cargo;
+  const [order, setOrder] = useState<Order | null>(loadOrder);
+  const [step, setStep] = useState<StepNumber>(() => (order ? 4 : 1));
+  const [ticket, setTicket] = useState<Ticket>(EMPTY_TICKET);
+  const [buyer, setBuyer] = useState<Buyer>(EMPTY_BUYER);
+  const [processing, setProcessing] = useState(false);
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const timerRef = useRef<number | undefined>(undefined);
+  const firstRender = useRef(true);
+
+  // Al cambiar de paso vuelve al inicio de la pasarela (no en la primera carga)
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [step]);
+
+  // Limpia el temporizador si el componente se desmonta durante el pago
+  useEffect(() => () => window.clearTimeout(timerRef.current), []);
+
+  const next = () => setStep((s) => (s < 4 ? ((s + 1) as StepNumber) : s));
+  const back = () => setStep((s) => (s > 1 ? ((s - 1) as StepNumber) : s));
+
+  const confirmPayment = (last4: string) => {
+    setProcessing(true);
+
+    // Simula el procesamiento del pago
+    timerRef.current = window.setTimeout(() => {
+      const { entrada, subtotal, cargo, total } = calcularPedido(ticket.id, ticket.quantity);
+      const newOrder: Order = {
+        id: `WS-${Date.now().toString(36).toUpperCase()}`,
+        date: new Date().toLocaleString('es-AR'),
+        ticketName: entrada.nombre,
+        quantity: ticket.quantity,
+        unitPrice: entrada.precio,
+        subtotal,
+        cargo,
+        total,
+        buyer: { name: buyer.name, email: buyer.email },
+        paymentMethod: `Tarjeta •••• ${last4}`,
+      };
+      saveOrder(newOrder);
+      setOrder(newOrder);
+      setProcessing(false);
+      setStep(4);
+    }, 1500);
+  };
+
+  const resetPurchase = () => {
+    saveOrder(null);
+    setOrder(null);
+    setTicket(EMPTY_TICKET);
+    setBuyer(EMPTY_BUYER);
+    setStep(1);
+  };
+
+  // En el paso 4 el resumen sale del pedido guardado (sirve también tras refrescar)
+  const summary: SummaryData =
+    step === 4 && order ? order : summaryFromTicket(ticket);
+
   return (
-    <section id="checkout" className="payment-container">
+    <section id="checkout" className="payment-container" ref={sectionRef}>
       <div className="payment-block">
         <header className="payment-header">
           <div>
@@ -44,116 +109,36 @@ function Payment() {
             <h2 className="payment-title">Finalizá tu compra</h2>
           </div>
 
-          <ol className="payment-pasos" aria-label="Pasos de la compra">
-            <li className="payment-paso actual">1 Entrada</li>
-            <li className="payment-paso">2 Datos</li>
-            <li className="payment-paso">3 Pago</li>
-            <li className="payment-paso">4 Listo</li>
-          </ol>
+          <StepIndicator current={step} />
         </header>
+
         <div className="row g-4 align-items-start">
           <div className="col-lg-7">
-            <div className="payment-h3">
-              <h3>Elegí tu entrada</h3>
+            {step === 1 && <StepTicket ticket={ticket} setTicket={setTicket} onNext={next} />}
 
-              {ENTRADAS.map((e) => (
-                <label
-                  key={e.id}
-                  className={
-                    e.id === entradaId
-                      ? "payment-opcion negrita"
-                      : "payment-opcion"
-                  }
-                >
-                  <input
-                    type="radio"
-                    name="entrada"
-                    checked={e.id === entradaId}
-                    onChange={() => setEntradaId(e.id)}
-                  />
-                  <span className="payment-opcion-text">
-                    <strong>{e.nombre}</strong>
-                    <small>{e.detalle}</small>
-                  </span>
-                  <strong>{pesos(e.precio)}</strong>
-                </label>
-              ))}
+            {step === 2 && (
+              <StepBuyer buyer={buyer} setBuyer={setBuyer} onNext={next} onBack={back} />
+            )}
 
-              <div className="payment-cantidad">
-                <span>Cantidad</span>
-                <div>
-                  <button
-                    type="button"
-                    aria-label="Quitar una entrada"
-                    onClick={() => setCantidad(Math.max(1, cantidad - 1))}
-                  >
-                    −
-                  </button>
-                  <span>{cantidad}</span>
-                  <button
-                    type="button"
-                    aria-label="Agregar una entrada"
-                    onClick={() => setCantidad(Math.min(10, cantidad + 1))}
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-              <button type="button" className="payment-continuar">
-                Continuar
-              </button>
-              <p className="payment-nota">
-                Pasarela de pago de ejemplo: no se procesan pagos ni se guardan
-                datos.
-              </p>
-            </div>
+            {step === 3 && (
+              <StepPayment
+                total={summary.total}
+                processing={processing}
+                onPay={confirmPayment}
+                onBack={back}
+              />
+            )}
+
+            {step === 4 && order && <Receipt order={order} onNewPurchase={resetPurchase} />}
           </div>
+
           <div className="col-lg-5">
-            <aside className="payment-resume">
-              <p className="payment-etiqueta">Tu pedido</p>
-              <h3>Workshop Rolling Code School</h3>
-              <p className="payment-gris">
-                Jueves 19/11 · 18:00 hs · Gral. Paz 576
-              </p>
-
-              <div className="payment-fila">
-                <span>
-                  {cantidad} {cantidad === 1 ? "entrada" : "entradas"}{" "}
-                  {entrada.nombre}
-                </span>
-                <span>{pesos(subtotal)}</span>
-              </div>
-              <div className="payment-fila">
-                <span>Cargo por servicio (5%)</span>
-                <span>{pesos(cargo)}</span>
-              </div>
-              <div className="payment-fila payment-total">
-                <span>Total</span>
-                <strong>{pesos(total)}</strong>
-              </div>
-
-              <p className="payment-seguro">
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <rect x="5" y="11" width="14" height="9" rx="2" />
-                  <path d="M8 11V8a4 4 0 018 0v3" />
-                </svg>
-                Pago protegido. Recibís la entrada por email.
-              </p>
-            </aside>
+            <OrderSummary data={summary} />
           </div>
         </div>
       </div>
     </section>
   );
 }
+
 export default Payment;

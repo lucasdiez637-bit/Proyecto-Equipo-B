@@ -182,8 +182,164 @@
 .payment-seguro svg { flex: none; color: var(--rc-red); }
 
 
+.error { color: #dc3545; display: block; }
 
-  @media (max-width: 767px) {
+/* ============================================================
+   Pasos 2, 3 y 4 (mismos colores y formas que el paso 1)
+   ============================================================ */
+
+/* Pasos ya completados */
+.payment-paso.hecho {
+  background: var(--rc-white);
+  border-color: var(--rc-white);
+  color: var(--rc-black);
+}
+
+/* Campos de formulario dentro de la tarjeta blanca */
+.payment-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.payment-campo label {
+  font-weight: 800;
+  font-size: 15px;
+}
+.payment-campo input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 18px;
+  font: inherit;
+  color: var(--rc-black);
+  background: var(--rc-white);
+  border: 2px solid var(--rc-text-soft);
+  border-radius: 18px;
+}
+.payment-campo input:focus {
+  outline: none;
+  border-color: var(--rc-red);
+}
+.payment-campo input[aria-invalid="true"] {
+  border-color: #dc3545;
+}
+.payment-campo input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.payment-doble {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Botones */
+.payment-continuar {
+  cursor: pointer;
+}
+.payment-continuar:disabled,
+.payment-volver:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.payment-volver {
+  min-height: 52px;
+  padding: 0 28px;
+  border: 2px solid var(--rc-text-soft);
+  border-radius: 999px;
+  background: var(--rc-white);
+  color: var(--rc-black);
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.payment-acciones {
+  display: flex;
+  gap: 12px;
+}
+.payment-acciones .payment-continuar {
+  flex: 1;
+}
+
+/* Paso 4: comprobante */
+.payment-centrado {
+  text-align: center;
+}
+.payment-exito {
+  display: grid;
+  place-items: center;
+  align-self: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--rc-red);
+  color: var(--rc-white);
+  font-size: 32px;
+}
+.payment-comprobante {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  border: 2px dashed var(--rc-text-soft);
+  border-radius: 18px;
+}
+.payment-comprobante h4 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  text-align: center;
+}
+.payment-comprobante dl {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.payment-comprobante dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+.payment-comprobante dt {
+  font-weight: 400;
+  color: var(--rc-gray-on-white);
+}
+.payment-comprobante dd {
+  margin: 0;
+  text-align: right;
+  font-weight: 800;
+  word-break: break-word;
+}
+.payment-comprobante-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--rc-text-soft);
+  font-weight: 800;
+}
+.payment-comprobante-total strong {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+/* Impresión: solo el comprobante */
+@media print {
+  body * { visibility: hidden; }
+  .payment-comprobante, .payment-comprobante * { visibility: visible; }
+  .payment-comprobante {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border: none;
+  }
+}
+
+@media (max-width: 767px) {
   .payment-block { padding: 24px; }
   .payment-h3, .payment-resume { padding: 24px; }
+  .payment-doble { grid-template-columns: 1fr; }
+  .payment-acciones { flex-direction: column-reverse; }
 }
