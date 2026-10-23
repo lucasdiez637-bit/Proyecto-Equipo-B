@@ -1,13 +1,14 @@
 import './App.css'
-import './components/hero/Hero'
-import Calendar from './components/Calendar/Calendar'
-import Metrics from './components/Metrics/metricas'
-import Payment from './components/Payment-Gateway/payment'
-import Sponsor from './components/Sponsor/sponsor'
-import Sponsors from './components/Sponsors/sponsors'
-import Timer from './components/timer/Timer'
-import Hero from './components/hero/Hero'
-import Navbar from './components/navbar/Navbar'
+import Calendar from './components/Calendar/Calendar';
+import Chatbot from './components/Chatbot/Chatbot';
+import Hero from './components/hero/Hero';
+import Metrics from './components/Metrics/metricas';
+import Navbar from './components/navbar/navbar';
+import Payment from './components/Payment-Gateway/payment';
+import Sponsor from './components/Sponsor/sponsor';
+import Sponsors from './components/Sponsors/sponsors';
+import Timer from './components/timer/Timer';
+
 function App() {
   return (
     <>
@@ -19,6 +20,7 @@ function App() {
     <Payment />
     <Sponsor/>
     <Sponsors />
+    <Chatbot/>
     </>
   );
 }
