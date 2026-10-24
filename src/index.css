@@ -15,4 +15,6 @@
   --rc-gradient: linear-gradient(160deg, #e0202a 0%, #a50d14 55%, #6e070c 100%);
   --bs-body-font-family: "Plus Jakarta Sans", system-ui, sans-serif;
 }
-
+body {
+  padding-top: 77px;
+}
