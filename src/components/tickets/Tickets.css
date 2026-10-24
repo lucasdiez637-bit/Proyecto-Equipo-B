@@ -1,6 +1,5 @@
 .tickets {
-  padding: 96px 24px 0;
-
+  padding: 96px max(24px, calc((100% - 1200px) / 2)) 0;
   background-color: var(--rc-black);
   color: var(--rc-white);
   font-family: var(--bs-body-font-family);

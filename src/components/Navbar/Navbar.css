@@ -1,4 +1,9 @@
 .site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1030;
   background-color: var(--rc-black);
   color: var(--rc-white);
   font-family: var(--bs-body-font-family);
