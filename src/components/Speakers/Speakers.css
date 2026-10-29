@@ -117,7 +117,6 @@
   line-height: 1.55;
 }
 
-
 @media (hover: hover) and (pointer: fine) {
   .speaker-card:hover {
     transform: scale(1.03);
@@ -129,7 +128,6 @@
   }
 }
 
-
 @media (prefers-reduced-motion: reduce) {
   .speaker-card,
   .speaker-card__talk {
@@ -138,5 +136,38 @@
 
   .speaker-card:hover {
     transform: none;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .speakers .speakers__grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px;
+
+    margin: 0 -24px;
+    padding: 0 24px 16px;
+
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 24px;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: none;
+  }
+
+  .speakers .speakers__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .speakers .speakers__grid > .col {
+    flex: 0 0 82%;
+    width: 82%;
+    max-width: 82%;
+    margin: 0;
+    padding: 0;
+
+    scroll-snap-align: start;
   }
 }
