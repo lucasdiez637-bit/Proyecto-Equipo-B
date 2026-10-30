@@ -385,7 +385,6 @@
    RESPONSIVE - SECCIÓN DE PAGO
    ========================================= */
 
-.payment-container,
 .payment-block,
 .payment-h3,
 .payment-resume {
@@ -400,8 +399,15 @@
   box-sizing: border-box;
 }
 
+/* Mismo ancho y mismos márgenes laterales que Tickets y Speakers:
+   contenido de 1200px (1248px menos 24px de padding a cada lado), centrado.
+   Antes el "max-width: 100%" anulaba el límite de 1248px y la pasarela se estiraba
+   de borde a borde en pantallas grandes. */
 .payment-container {
+  box-sizing: border-box;
   width: 100%;
+  min-width: 0;
+  max-width: 1248px;
 }
 
 .payment-opcion {
@@ -514,8 +520,8 @@
 
 /* Pantallas pequeñas */
 @media (max-width: 400px) {
+  /* Solo cambia el espacio vertical: el margen lateral sigue en 24px, igual que el resto de las secciones */
   .payment-container {
-    padding: 0 12px;
     margin: 32px auto 56px;
   }
 
@@ -591,10 +597,6 @@
 
 /* Pantallas de 300px o menos */
 @media (max-width: 300px) {
-  .payment-container {
-    padding: 0 8px;
-  }
-
   .payment-block {
     padding: 12px;
     border-radius: 18px;
