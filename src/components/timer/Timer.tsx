@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import "./Timer.css"
+import "./Timer.css";
+import { useCuposRestantes } from "../Payment-Gateway/checkoutStore";
+import { CUPOS_TOTALES } from "../Payment-Gateway/ticketsData";
+
 const LIMITE = new Date("2026-10-31T23:59:59");
-const CUPOS_TOTALES = 60;
-const CUPOS_RESTANTES = 38;
-const VENDIDAS = 63;
 
 function calcular() {
   const diff = Math.max(LIMITE.getTime() - Date.now(), 0);
@@ -20,11 +20,17 @@ export default function Timer() {
     const id = setInterval(() => setT(calcular()), 1000);
     return () => clearInterval(id);
   }, []);
+
+  // Cupos que quedan según lo que el usuario está eligiendo en la pasarela.
+  // Al terminar la compra vuelven a su valor inicial.
+  const restantes = useCuposRestantes();
+  const vendidas = Math.round(((CUPOS_TOTALES - restantes) / CUPOS_TOTALES) * 100);
+
   const unidades = [
     { valor: t.dias, etiqueta: "DÍAS" },
     { valor: t.horas, etiqueta: "HORAS" },
     { valor: t.min, etiqueta: "MIN" },
-  ]; 
+  ];
   return (
     <section className="section">
       <p className="etiqueta">Entradas</p>
@@ -45,11 +51,14 @@ export default function Timer() {
         </div>
         <div className="available">
           <div className="available-text">
-            <strong>Quedan {CUPOS_RESTANTES} de {CUPOS_TOTALES} Early Bird</strong>
-            <span>{VENDIDAS}% vendidas</span>
+            <strong>Quedan {restantes} de {CUPOS_TOTALES} Early Bird</strong>
+            <span>{vendidas}% vendidas</span>
           </div>
           <div className="progress">
-            <div className="progress-bar" style={{ width: `${VENDIDAS}%` }} />
+            <div
+              className="progress-bar"
+              style={{ width: `${vendidas}%`, transition: "width 0.4s ease" }}
+            />
           </div>
         </div>
       </div>

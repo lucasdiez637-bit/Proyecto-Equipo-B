@@ -323,6 +323,21 @@
   font-size: 28px;
   font-weight: 800;
 }
+.payment-cantidad-input {
+  width: 72px;
+  height: 44px;
+  text-align: center;
+  font: inherit;
+  font-weight: 800;
+  color: var(--rc-black);
+  background: var(--rc-white);
+  border: 2px solid var(--rc-text-soft);
+  border-radius: 14px;
+}
+.payment-cantidad-input:focus {
+  outline: none;
+  border-color: var(--rc-red);
+}
 
 /* Impresión: solo el comprobante */
 @media print {

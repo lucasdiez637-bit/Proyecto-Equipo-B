@@ -7,6 +7,7 @@ import StepPayment from './StepPayment';
 import Receipt from './Receipt';
 import OrderSummary from './OrderSummary';
 import { ENTRADAS, calcularPedido } from './ticketsData';
+import { setReserved, useEntradaRequest } from './checkoutStore';
 import type { Buyer, Order, StepNumber, SummaryData, Ticket } from './types';
 
 const STORAGE_KEY = 'payment-last-order';
@@ -43,6 +44,10 @@ function Payment() {
   const [ticket, setTicket] = useState<Ticket>(EMPTY_TICKET);
   const [buyer, setBuyer] = useState<Buyer>(EMPTY_BUYER);
   const [processing, setProcessing] = useState(false);
+  // true cuando el usuario ya empezó a elegir (así el Timer no cambia al cargar la página)
+  const [engaged, setEngaged] = useState(false);
+
+  const request = useEntradaRequest();
 
   const sectionRef = useRef<HTMLElement>(null);
   const timerRef = useRef<number | undefined>(undefined);
@@ -60,8 +65,44 @@ function Payment() {
   // Limpia el temporizador si el componente se desmonta durante el pago
   useEffect(() => () => window.clearTimeout(timerRef.current), []);
 
+  // El usuario tocó "Comprar entrada" en la sección Tickets:
+  // se deja esa entrada elegida y se vuelve al paso 1
+  useEffect(() => {
+    if (request.nonce === 0) return;
+    window.clearTimeout(timerRef.current);
+    saveOrder(null);
+    setOrder(null);
+    setProcessing(false);
+    setTicket((t) => ({ ...t, id: request.id }));
+    setEngaged(true);
+    setStep(1);
+  }, [request]);
+
+  // Le avisa al Timer qué se está comprando (null = no hay compra en curso)
+  useEffect(() => {
+    setReserved(
+      engaged && step < 4 && ticket.id
+        ? { id: ticket.id, quantity: ticket.quantity }
+        : null,
+    );
+  }, [engaged, step, ticket.id, ticket.quantity]);
+
+  useEffect(() => () => setReserved(null), []);
+
+  const updateTicket = (next: Ticket) => {
+    setTicket(next);
+    setEngaged(true);
+  };
+
   const next = () => setStep((s) => (s < 4 ? ((s + 1) as StepNumber) : s));
   const back = () => setStep((s) => (s > 1 ? ((s - 1) as StepNumber) : s));
+
+  // Deja la compra lista para empezar de nuevo (y el Timer vuelve a su valor inicial)
+  const clearPurchase = () => {
+    setTicket(EMPTY_TICKET);
+    setBuyer(EMPTY_BUYER);
+    setEngaged(false);
+  };
 
   const confirmPayment = (last4: string) => {
     setProcessing(true);
@@ -85,14 +126,14 @@ function Payment() {
       setOrder(newOrder);
       setProcessing(false);
       setStep(4);
+      clearPurchase();
     }, 1500);
   };
 
   const resetPurchase = () => {
     saveOrder(null);
     setOrder(null);
-    setTicket(EMPTY_TICKET);
-    setBuyer(EMPTY_BUYER);
+    clearPurchase();
     setStep(1);
   };
 
@@ -114,7 +155,9 @@ function Payment() {
 
         <div className="row g-4 align-items-start">
           <div className="col-lg-7">
-            {step === 1 && <StepTicket ticket={ticket} setTicket={setTicket} onNext={next} />}
+            {step === 1 && (
+              <StepTicket ticket={ticket} setTicket={updateTicket} onNext={next} />
+            )}
 
             {step === 2 && (
               <StepBuyer buyer={buyer} setBuyer={setBuyer} onNext={next} onBack={back} />

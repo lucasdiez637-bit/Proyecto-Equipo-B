@@ -26,13 +26,18 @@ export const ENTRADAS: Entrada[] = [
   },
 ];
 
+// Id de la entrada que tiene cupos limitados (la usan el Timer y las tarjetas de Tickets)
+export const EARLY_BIRD_ID = 'early';
+export const CUPOS_TOTALES = 60;
+// Cupos Early Bird que quedan antes de que alguien arme una compra
+export const CUPOS_RESTANTES_BASE = 38;
+
 export const EVENTO = {
   nombre: 'Workshop Rolling Code School',
   detalle: 'Jueves 19/11 · 18:00 hs · Gral. Paz 576',
 };
 
 export const CARGO_SERVICIO = 0.05; // 5%
-export const MAX_POR_COMPRA = 10;
 
 // Calcula entrada, subtotal, cargo y total a partir de la selección
 export const calcularPedido = (entradaId: string, cantidad: number) => {
