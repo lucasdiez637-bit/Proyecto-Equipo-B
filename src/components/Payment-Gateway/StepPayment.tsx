@@ -1,13 +1,14 @@
 import { useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import type { CardData } from './types';
+import { detectBrand } from './cards';
 import { digitsOnly, formatCardNumber, formatExpiry, pesos, validateCard } from './validators';
 import type { FieldErrors } from './validators';
 
 interface Props {
   total: number;
   processing: boolean;
-  onPay: (last4: string) => void;
+  onPay: (last4: string, brandName: string) => void;
   onBack: () => void;
 }
 
@@ -19,11 +20,14 @@ export default function StepPayment({ total, processing, onPay, onBack }: Props)
   const [errors, setErrors] = useState<FieldErrors<CardData>>({});
   const formRef = useRef<HTMLFormElement>(null);
 
+  // Marca de la tarjeta según los primeros dígitos (Visa, Mastercard, etc.)
+  const brand = detectBrand(digitsOnly(card.number));
+
   const handleChange = (field: keyof CardData, raw: string) => {
     let value = raw;
     if (field === 'number') value = formatCardNumber(raw);
     if (field === 'expiry') value = formatExpiry(raw);
-    if (field === 'cvv') value = digitsOnly(raw).slice(0, 4);
+    if (field === 'cvv') value = digitsOnly(raw).slice(0, brand.cvvLength);
 
     setCard({ ...card, [field]: value });
     if (errors[field]) setErrors({ ...errors, [field]: undefined });
@@ -47,7 +51,7 @@ export default function StepPayment({ total, processing, onPay, onBack }: Props)
       });
       return;
     }
-    onPay(digitsOnly(card.number).slice(-4));
+    onPay(digitsOnly(card.number).slice(-4), brand.name);
   };
 
   return (
@@ -55,12 +59,18 @@ export default function StepPayment({ total, processing, onPay, onBack }: Props)
       <h3>Pago</h3>
 
       <p className="payment-nota">
-        Pago simulado: no se realiza ningún cobro real. Para probar usá la tarjeta{' '}
-        <strong>4242 4242 4242 4242</strong>, un vencimiento futuro y cualquier CVV.
+        Pago simulado: no se realiza ningún cobro real y los datos de la tarjeta no se guardan.
       </p>
 
       <div className="payment-campo">
-        <label htmlFor="payment-card-number">Número de tarjeta</label>
+        <div className="payment-campo-cabecera">
+          <label htmlFor="payment-card-number">Número de tarjeta</label>
+          {brand.id !== 'unknown' && (
+            <span className="payment-marca" aria-live="polite">
+              {brand.name}
+            </span>
+          )}
+        </div>
         <input
           id="payment-card-number"
           inputMode="numeric"
@@ -128,6 +138,7 @@ export default function StepPayment({ total, processing, onPay, onBack }: Props)
             type="password"
             inputMode="numeric"
             autoComplete="cc-csc"
+            placeholder={`${brand.cvvLength} dígitos`}
             value={card.cvv}
             onChange={(e) => handleChange('cvv', e.target.value)}
             onBlur={() => handleBlur('cvv')}

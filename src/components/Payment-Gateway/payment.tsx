@@ -6,13 +6,25 @@ import StepBuyer from './StepBuyer';
 import StepPayment from './StepPayment';
 import Receipt from './Receipt';
 import OrderSummary from './OrderSummary';
-import { ENTRADAS, calcularPedido } from './ticketsData';
-import { setReserved, useEntradaRequest } from './checkoutStore';
+import { EARLY_BIRD_ID, ENTRADAS, calcularPedido } from './ticketsData';
+import {
+  getCuposDisponibles,
+  registrarVenta,
+  setReserved,
+  useCuposDisponibles,
+  useEntradaRequest,
+} from './checkoutStore';
 import type { Buyer, Order, StepNumber, SummaryData, Ticket } from './types';
 
 const STORAGE_KEY = 'payment-last-order';
-const EMPTY_TICKET: Ticket = { id: ENTRADAS[0]?.id ?? '', quantity: 1 };
 const EMPTY_BUYER: Buyer = { name: '', email: '', phone: '' };
+
+// Ticket vacío: la primera entrada que todavía se puede comprar (Early Bird si hay cupos)
+const emptyTicket = (): Ticket => {
+  const agotada = getCuposDisponibles() <= 0;
+  const disponible = ENTRADAS.find((e) => !(e.id === EARLY_BIRD_ID && agotada));
+  return { id: disponible?.id ?? ENTRADAS[0]?.id ?? '', quantity: 1 };
+};
 
 // Recupera el último comprobante si el usuario refresca la página en el paso 4
 const loadOrder = (): Order | null => {
@@ -41,13 +53,15 @@ const summaryFromTicket = (ticket: Ticket): SummaryData => {
 function Payment() {
   const [order, setOrder] = useState<Order | null>(loadOrder);
   const [step, setStep] = useState<StepNumber>(() => (order ? 4 : 1));
-  const [ticket, setTicket] = useState<Ticket>(EMPTY_TICKET);
+  const [ticket, setTicket] = useState<Ticket>(emptyTicket);
   const [buyer, setBuyer] = useState<Buyer>(EMPTY_BUYER);
   const [processing, setProcessing] = useState(false);
-  // true cuando el usuario ya empezó a elegir (así el Timer no cambia al cargar la página)
+  const [notice, setNotice] = useState('');
+  // true cuando el usuario ya empezó a elegir (así los cupos no cambian al cargar la página)
   const [engaged, setEngaged] = useState(false);
 
   const request = useEntradaRequest();
+  const disponibles = useCuposDisponibles();
 
   const sectionRef = useRef<HTMLElement>(null);
   const timerRef = useRef<number | undefined>(undefined);
@@ -73,12 +87,23 @@ function Payment() {
     saveOrder(null);
     setOrder(null);
     setProcessing(false);
+    setNotice('');
     setTicket((t) => ({ ...t, id: request.id }));
     setEngaged(true);
     setStep(1);
   }, [request]);
 
-  // Le avisa al Timer qué se está comprando (null = no hay compra en curso)
+  // Si la entrada elegida es Early Bird y se agotó (por ejemplo en otra pestaña),
+  // se pasa a otra entrada y se avisa
+  useEffect(() => {
+    if (ticket.id === EARLY_BIRD_ID && disponibles <= 0 && step < 4) {
+      setTicket((t) => ({ ...t, id: emptyTicket().id }));
+      setNotice('Las entradas Early Bird se agotaron. Elegí otra entrada para continuar.');
+      setStep(1);
+    }
+  }, [ticket.id, disponibles, step]);
+
+  // Le avisa al resto de la página qué se está comprando (null = no hay compra en curso)
   useEffect(() => {
     setReserved(
       engaged && step < 4 && ticket.id
@@ -91,24 +116,56 @@ function Payment() {
 
   const updateTicket = (next: Ticket) => {
     setTicket(next);
+    setNotice('');
     setEngaged(true);
   };
 
   const next = () => setStep((s) => (s < 4 ? ((s + 1) as StepNumber) : s));
   const back = () => setStep((s) => (s > 1 ? ((s - 1) as StepNumber) : s));
 
-  // Deja la compra lista para empezar de nuevo (y el Timer vuelve a su valor inicial)
+  // Deja la compra lista para empezar de nuevo
   const clearPurchase = () => {
-    setTicket(EMPTY_TICKET);
+    setTicket(emptyTicket());
     setBuyer(EMPTY_BUYER);
+    setNotice('');
     setEngaged(false);
   };
 
-  const confirmPayment = (last4: string) => {
+  // Si piden más Early Bird de las que quedan, devuelve cuántas quedan; si no, null
+  const shortage = (): number | null => {
+    if (ticket.id !== EARLY_BIRD_ID) return null;
+    const left = getCuposDisponibles();
+    return ticket.quantity > left ? left : null;
+  };
+
+  const rejectPurchase = (left: number) => {
+    setProcessing(false);
+    setNotice(
+      left <= 0
+        ? 'Las entradas Early Bird se agotaron. Elegí otra entrada para continuar.'
+        : `Ya no hay suficientes entradas Early Bird: quedan ${left}. Ajustá la cantidad para continuar.`,
+    );
+    setStep(1);
+  };
+
+  const confirmPayment = (last4: string, brandName: string) => {
+    // Se revisa antes y otra vez al terminar, por si cambió la disponibilidad
+    const before = shortage();
+    if (before !== null) {
+      rejectPurchase(before);
+      return;
+    }
+
     setProcessing(true);
 
     // Simula el procesamiento del pago
     timerRef.current = window.setTimeout(() => {
+      const after = shortage();
+      if (after !== null) {
+        rejectPurchase(after);
+        return;
+      }
+
       const { entrada, subtotal, cargo, total } = calcularPedido(ticket.id, ticket.quantity);
       const newOrder: Order = {
         id: `WS-${Date.now().toString(36).toUpperCase()}`,
@@ -120,8 +177,12 @@ function Payment() {
         cargo,
         total,
         buyer: { name: buyer.name, email: buyer.email },
-        paymentMethod: `Tarjeta •••• ${last4}`,
+        paymentMethod: `${brandName} •••• ${last4}`,
       };
+
+      // Las Early Bird compradas se descuentan para siempre
+      if (ticket.id === EARLY_BIRD_ID) registrarVenta(ticket.quantity);
+
       saveOrder(newOrder);
       setOrder(newOrder);
       setProcessing(false);
@@ -156,7 +217,12 @@ function Payment() {
         <div className="row g-4 align-items-start">
           <div className="col-lg-7">
             {step === 1 && (
-              <StepTicket ticket={ticket} setTicket={updateTicket} onNext={next} />
+              <StepTicket
+                ticket={ticket}
+                setTicket={updateTicket}
+                onNext={next}
+                notice={notice}
+              />
             )}
 
             {step === 2 && (

@@ -1,18 +1,20 @@
 import "./Calendar.css";
+
 const TALKS = [
   { time: "18:00", topic: "Acreditación y bienvenida" },
-  { time: "18:20", topic: "Tu primer día como developer", speaker: "Daniela Cardozo" },
-  { time: "18:40", topic: "De cero a tu primer proyecto", speaker: "Franco Diaz" },
-  { time: "19:00", topic: "Armá tu portfolio con IA", speaker: "Gaston" },
-  { time: "19:20", topic: "Git y GitHub sin miedo", speaker: "Mauro" },
-  { time: "19:40", topic: "Tu primer backend con Node", speaker: "Jose Diaz" },
-  { time: "20:00", topic: "Preparate para tu primera entrevista", speaker: "Tomas Gomez" },
-  { time: "20:20", topic: "Mi primer trabajo en IT", speaker: "Pablo Basso" },
-  { time: "20:40", topic: "Testing: cómo no romper todo", speaker: "Julian Martin" },
-  { time: "21:00", topic: "Diseño para developers", speaker: "Tomas Escudero" },
-  { time: "21:20", topic: "Tu primera base de datos", speaker: "Andres Perlo" },
+  { time: "18:20", topic: "Tu primer día como developer", speaker: "Daniela Cardozo", speakerId: "daniela-cardozo" },
+  { time: "18:40", topic: "De cero a tu primer proyecto", speaker: "Franco Diaz", speakerId: "franco-diaz" },
+  { time: "19:00", topic: "Armá tu portfolio con IA", speaker: "Gaston", speakerId: "gaston" },
+  { time: "19:20", topic: "Git y GitHub sin miedo", speaker: "Mauro", speakerId: "mauro" },
+  { time: "19:40", topic: "Tu primer backend con Node", speaker: "Jose Diaz", speakerId: "jose-diaz" },
+  { time: "20:00", topic: "Preparate para tu primera entrevista", speaker: "Tomas Gomez", speakerId: "tomas-gomez" },
+  { time: "20:20", topic: "Mi primer trabajo en IT", speaker: "Pablo Basso", speakerId: "pablo-basso" },
+  { time: "20:40", topic: "Testing: cómo no romper todo", speaker: "Julian Martin", speakerId: "julian-martin" },
+  { time: "21:00", topic: "Diseño para developers", speaker: "Tomas Escudero", speakerId: "tomas-escudero" },
+  { time: "21:20", topic: "Tu primera base de datos", speaker: "Andres Perlo", speakerId: "andres-perlo" },
   { time: "21:40", topic: "Preguntas y networking" },
 ];
+
 function Calendar() {
   return (
     <section id="agenda" className="agenda">
@@ -31,14 +33,18 @@ function Calendar() {
         </div>
         <div className="col-lg-8">
           <ol className="agenda-list">
-            {TALKS.map((t) => (
-              <li key={t.time} className="agenda-item">
-                <time className="agenda-time" dateTime={t.time}>
-                  {t.time}
+            {TALKS.map((talk) => (
+              <li
+                key={talk.time}
+                id={talk.speakerId ? `agenda-${talk.speakerId}` : undefined}
+                className="agenda-item"
+              >
+                <time className="agenda-time" dateTime={talk.time}>
+                  {talk.time}
                 </time>
                 <div className="agenda-talk">
-                  <h3>{t.topic}</h3>
-                  {t.speaker && <p>{t.speaker}</p>}
+                  <h3>{talk.topic}</h3>
+                  {talk.speaker && <p>{talk.speaker}</p>}
                 </div>
               </li>
             ))}
@@ -48,4 +54,5 @@ function Calendar() {
     </section>
   );
 }
+
 export default Calendar;

@@ -180,8 +180,24 @@
     color 0.3s ease,
     border-color 0.3s ease;
 }
-
-
+.ticket-card--agotada {
+  opacity: 0.6;
+}
+.ticket-button--agotada {
+  cursor: not-allowed;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ticket-card.ticket-card--agotada:hover {
+    background-color: var(--rc-surface);
+    border-color: var(--rc-border);
+    transform: none;
+  }
+  .ticket-card.ticket-card--agotada:hover .ticket-button {
+    background-color: transparent;
+    border-color: #3a3a40;
+    color: var(--rc-white);
+  }
+}
 @media (hover: hover) and (pointer: fine) {
   .ticket-card:hover {
     background-color: var(--rc-red-dark);

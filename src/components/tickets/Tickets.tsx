@@ -1,18 +1,26 @@
 import "./Tickets.css";
 import { tickets } from "../../data/eventData";
-import { selectEntrada, useCuposRestantes } from "../Payment-Gateway/checkoutStore";
+import {
+  selectEntrada,
+  useCuposDisponibles,
+  useCuposRestantes,
+} from "../Payment-Gateway/checkoutStore";
 import { EARLY_BIRD_ID } from "../Payment-Gateway/ticketsData";
 
 function Tickets() {
   const cuposRestantes = useCuposRestantes();
+  const cuposDisponibles = useCuposDisponibles();
+
+  const agotada = (id: string) => id === EARLY_BIRD_ID && cuposDisponibles <= 0;
 
   // En Early Bird, el número que sigue a "Quedan" en el chip (por ejemplo "Quedan 38")
-  // se reemplaza por los cupos actuales, así cambia al comprar.
+  // se reemplaza por los cupos actuales, así cambia al comprar. Si no queda ninguno, dice "Agotada".
   // Las demás entradas, y cualquier otro número del texto, quedan tal cual.
-  const badgeText = (id: string, badge: string) =>
-    id === EARLY_BIRD_ID
-      ? badge.replace(/(quedan\D*)\d+/i, `$1${cuposRestantes}`)
-      : badge;
+  const badgeText = (id: string, badge: string) => {
+    if (id !== EARLY_BIRD_ID) return badge;
+    if (agotada(id)) return "Agotada";
+    return badge.replace(/(quedan\D*)\d+/i, `$1${cuposRestantes}`);
+  };
 
   return (
     <section id="entradas" className="tickets" aria-label="Entradas">
@@ -28,7 +36,9 @@ function Tickets() {
               }
             >
               <article
-                className={`ticket-card ticket-card--${ticket.id}`}
+                className={`ticket-card ticket-card--${ticket.id}${
+                  agotada(ticket.id) ? " ticket-card--agotada" : ""
+                }`}
               >
                 <header className="ticket-card-header">
                   <h3 className="ticket-name">{ticket.name}</h3>
@@ -66,14 +76,23 @@ function Tickets() {
                   ))}
                 </ul>
 
-                {/* El href lleva a la pasarela y selectEntrada deja esta entrada elegida */}
-                <a
-                  href="#checkout"
-                  className="ticket-button"
-                  onClick={() => selectEntrada(ticket.id, ticket.name)}
-                >
-                  Comprar entrada
-                </a>
+                {agotada(ticket.id) ? (
+                  <span
+                    className="ticket-button ticket-button--agotada"
+                    aria-disabled="true"
+                  >
+                    Agotada
+                  </span>
+                ) : (
+                  // El href lleva a la pasarela y selectEntrada deja esta entrada elegida
+                  <a
+                    href="#checkout"
+                    className="ticket-button"
+                    onClick={() => selectEntrada(ticket.id, ticket.name)}
+                  >
+                    Comprar entrada
+                  </a>
+                )}
               </article>
             </div>
           ))}

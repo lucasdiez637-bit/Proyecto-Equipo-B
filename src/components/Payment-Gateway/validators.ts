@@ -1,4 +1,5 @@
 import type { Buyer, CardData } from './types';
+import { detectBrand } from './cards';
 
 export type FieldErrors<T> = Partial<Record<keyof T, string>>;
 
@@ -6,10 +7,19 @@ export type FieldErrors<T> = Partial<Record<keyof T, string>>;
 
 export const digitsOnly = (value: string) => value.replace(/\D/g, '');
 
-export const formatCardNumber = (value: string) =>
-  digitsOnly(value)
-    .slice(0, 16)
-    .replace(/(\d{4})(?=\d)/g, '$1 ');
+// Agrupa los dígitos según la marca: Visa/Mastercard 4-4-4-4, American Express 4-6-5
+export const formatCardNumber = (value: string) => {
+  const all = digitsOnly(value);
+  const brand = detectBrand(all);
+  const digits = all.slice(0, brand.length);
+
+  let out = '';
+  for (let i = 0; i < digits.length; i++) {
+    if (brand.gaps.includes(i)) out += ' ';
+    out += digits[i];
+  }
+  return out;
+};
 
 export const formatExpiry = (value: string) => {
   const d = digitsOnly(value).slice(0, 4);
@@ -72,9 +82,13 @@ export const validateBuyer = (buyer: Buyer): FieldErrors<Buyer> => {
 export const validateCard = (card: CardData): FieldErrors<CardData> => {
   const errors: FieldErrors<CardData> = {};
   const number = digitsOnly(card.number);
+  const brand = detectBrand(number);
 
-  if (number.length !== 16) {
-    errors.number = 'La tarjeta debe tener 16 dígitos';
+  if (number.length !== brand.length) {
+    errors.number =
+      brand.id === 'unknown'
+        ? 'La tarjeta debe tener 16 dígitos'
+        : `La tarjeta ${brand.name} debe tener ${brand.length} dígitos`;
   } else if (!passesLuhn(number)) {
     errors.number = 'El número de tarjeta no es válido';
   }
@@ -86,8 +100,8 @@ export const validateCard = (card: CardData): FieldErrors<CardData> => {
   } else if (isExpired(card.expiry)) {
     errors.expiry = 'La tarjeta está vencida o la fecha no es válida';
   }
-  if (!/^\d{3,4}$/.test(card.cvv)) {
-    errors.cvv = 'El código debe tener 3 o 4 dígitos';
+  if (!new RegExp(`^\\d{${brand.cvvLength}}$`).test(card.cvv)) {
+    errors.cvv = `El código debe tener ${brand.cvvLength} dígitos`;
   }
   return errors;
 };

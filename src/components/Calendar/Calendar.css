@@ -70,6 +70,51 @@
   font-size: 14px;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+
+.speaker-agenda-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: inherit;
+}
+
+
+.speaker-agenda-link:focus-visible {
+  outline: 3px solid #f0b429;
+  outline-offset: 5px;
+}
+
+
+.agenda-item[id^="agenda-"] {
+  scroll-margin-top: 110px;
+}
+
+
+@keyframes agenda-speaker-highlight {
+  0%,
+  100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 0 transparent;
+  }
+
+  15%,
+  65% {
+    background-color: rgba(240, 180, 41, 0.22);
+    box-shadow: 0 0 0 8px rgba(240, 180, 41, 0.12);
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
 @media (max-width: 991px) {
   .agenda-header { position: static; }
 }

@@ -3,7 +3,7 @@ import "./Speakers.css";
 import speaker6 from "../../Speakers/Tomas.jpeg";
 import speaker5 from "../../Speakers/Pablo.jpeg";
 import speaker2 from "../.././Speakers/Franco.jpeg";
-import speaker3 from "../../Speakers/Jose.jpeg"
+import speaker3 from "../../Speakers/Jose.jpeg";
 import speaker1 from "../../Speakers/Daniela.jpeg";
 import speaker0 from "../.././Speakers/Julian.jpeg";
 import speaker7 from "../../Speakers/Tomas E.jpeg";
@@ -11,21 +11,19 @@ import speaker8 from "../../Speakers/Gaston.jpeg";
 import speaker9 from "../../Speakers/Mauro.jpeg";
 import speaker10 from "../../Speakers/Andres.jpeg";
 
-
 const speakers = [
   {
     id: "tomas-escudero",
     name: "Tomas Escudero",
-    image: speaker7,  
+    image: speaker7,
     talkTitle: "Diseño para developers",
     description:
       "Qué mira un equipo de diseño antes de que escribas código y cómo leer un mockup para construirlo igual.",
-    
   },
   {
     id: "franco-diaz",
     name: "Franco Diaz",
-    image: speaker2 ,
+    image: speaker2,
     talkTitle: "De cero a tu primer proyecto",
     description:
       "Un recorrido para pasar de mirar tutoriales a terminar una app simple con HTML, JavaScript y React.",
@@ -57,7 +55,7 @@ const speakers = [
   {
     id: "tomas-gomez",
     name: "Tomas Gomez",
-    image: speaker6,  
+    image: speaker6,
     talkTitle: "Preparate para tu primera entrevista",
     description:
       "Qué preguntan en una entrevista técnica, cómo practicar y cómo contar tus proyectos con claridad.",
@@ -73,7 +71,7 @@ const speakers = [
   {
     id: "julian-martin",
     name: "Julian Martin",
-    image: speaker0 ,
+    image: speaker0,
     talkTitle: "Testing: cómo no romper todo",
     description:
       "Qué es testear, por qué importa y cómo escribir tus primeras pruebas sin complicarte.",
@@ -115,12 +113,69 @@ function Speakers() {
         <div className="speakers__grid row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-5 g-4">
           {speakers.map((speaker) => (
             <div className="col" key={speaker.id}>
-              <SpeakerCard
-                name={speaker.name}
-                image={speaker.image}
-                talkTitle={speaker.talkTitle}
-                description={speaker.description}
-              />
+              <a
+  className="speaker-agenda-link"
+  href={`#agenda-${speaker.id}`}
+  aria-label={`Ver charla de ${speaker.name}`}
+  onClick={(event) => {
+    event.preventDefault();
+
+    const target = document.getElementById(
+      `agenda-${speaker.id}`
+    );
+
+    if (!target) return;
+
+    target.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+
+    target.getAnimations().forEach((animation) => {
+      animation.cancel();
+    });
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      target.style.outline = "2px solid #f0b429";
+      target.style.outlineOffset = "4px";
+      return;
+    }
+
+    target.animate(
+      [
+        {
+          backgroundColor: "transparent",
+          boxShadow: "0 0 0 0 transparent",
+        },
+        {
+          backgroundColor: "rgba(240, 180, 41, 0.22)",
+          boxShadow: "0 0 0 8px rgba(240, 180, 41, 0.12)",
+          offset: 0.15,
+        },
+        {
+          backgroundColor: "rgba(240, 180, 41, 0.22)",
+          boxShadow: "0 0 0 8px rgba(240, 180, 41, 0.12)",
+          offset: 0.65,
+        },
+        {
+          backgroundColor: "transparent",
+          boxShadow: "0 0 0 0 transparent",
+        },
+      ],
+      {
+        duration: 2200,
+        easing: "ease",
+      }
+    );
+  }}
+>
+  <SpeakerCard
+    name={speaker.name}
+    image={speaker.image}
+    talkTitle={speaker.talkTitle}
+    description={speaker.description}
+  />
+</a>
             </div>
           ))}
         </div>

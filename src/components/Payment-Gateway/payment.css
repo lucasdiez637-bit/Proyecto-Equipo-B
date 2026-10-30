@@ -338,7 +338,30 @@
   outline: none;
   border-color: var(--rc-red);
 }
-
+.payment-opcion.agotada {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.payment-aviso {
+  margin: 0;
+  color: #dc3545;
+  font-size: 14px;
+  font-weight: 800;
+}
+.payment-campo-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.payment-marca {
+  padding: 2px 12px;
+  border-radius: 999px;
+  background: var(--rc-black);
+  color: var(--rc-white);
+  font-size: 12px;
+  font-weight: 800;
+}
 /* Impresión: solo el comprobante */
 @media print {
   body * { visibility: hidden; }
