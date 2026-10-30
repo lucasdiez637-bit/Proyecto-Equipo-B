@@ -381,3 +381,264 @@
   .payment-doble { grid-template-columns: 1fr; }
   .payment-acciones { flex-direction: column-reverse; }
 }
+/* =========================================
+   RESPONSIVE - SECCIÓN DE PAGO
+   ========================================= */
+
+.payment-container,
+.payment-block,
+.payment-h3,
+.payment-resume {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.payment-block *,
+.payment-h3 *,
+.payment-resume * {
+  box-sizing: border-box;
+}
+
+.payment-container {
+  width: 100%;
+}
+
+.payment-opcion {
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.payment-opcion-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.payment-cantidad {
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.payment-cantidad > div {
+  min-width: 0;
+  flex-wrap: nowrap;
+  gap: 6px;
+}
+
+.payment-cantidad button {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+}
+
+.payment-cantidad-input {
+  width: 56px;
+  min-width: 0;
+  height: 40px;
+  padding: 0 4px;
+}
+
+.payment-fila {
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.payment-fila > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.payment-total {
+  align-items: center;
+  gap: 10px;
+}
+
+.payment-total strong {
+  min-width: 0;
+  max-width: 100%;
+  font-size: clamp(24px, 5vw, 36px);
+  overflow-wrap: anywhere;
+}
+
+.payment-campo,
+.payment-campo input {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.payment-campo input {
+  width: 100%;
+}
+
+.payment-doble {
+  min-width: 0;
+}
+
+.payment-acciones {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.payment-acciones button {
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  padding-inline: 12px;
+  white-space: normal;
+}
+
+.payment-comprobante {
+  min-width: 0;
+  max-width: 100%;
+  padding: 16px;
+}
+
+.payment-comprobante dl > div,
+.payment-comprobante-total {
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.payment-comprobante-total strong {
+  min-width: 0;
+  max-width: 100%;
+  font-size: clamp(22px, 5vw, 28px);
+  overflow-wrap: anywhere;
+}
+
+/* Pantallas pequeñas */
+@media (max-width: 400px) {
+  .payment-container {
+    padding: 0 12px;
+    margin: 32px auto 56px;
+  }
+
+  .payment-block {
+    padding: 16px;
+    border-radius: 24px;
+  }
+
+  .payment-title {
+    font-size: clamp(28px, 9vw, 36px);
+    overflow-wrap: break-word;
+  }
+
+  .payment-h3,
+  .payment-resume {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .payment-h3 h3,
+  .payment-resume h3 {
+    font-size: 20px;
+  }
+
+  .payment-opcion {
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .payment-cantidad {
+    align-items: flex-start;
+  }
+
+  .payment-cantidad > div {
+    gap: 5px;
+  }
+
+  .payment-cantidad button {
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+  }
+
+  .payment-cantidad-input {
+    width: 48px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .payment-total strong {
+    font-size: 25px;
+  }
+
+  .payment-pasos {
+    gap: 6px;
+  }
+
+  .payment-paso {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .payment-acciones {
+    gap: 8px;
+  }
+
+  .payment-continuar,
+  .payment-volver {
+    font-size: 15px;
+    min-height: 46px;
+  }
+}
+
+/* Pantallas de 300px o menos */
+@media (max-width: 300px) {
+  .payment-container {
+    padding: 0 8px;
+  }
+
+  .payment-block {
+    padding: 12px;
+    border-radius: 18px;
+  }
+
+  .payment-h3,
+  .payment-resume {
+    padding: 12px;
+  }
+
+  .payment-title {
+    font-size: 27px;
+  }
+
+  .payment-opcion {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .payment-cantidad {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .payment-cantidad > div {
+    justify-content: flex-start;
+  }
+
+  .payment-total {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .payment-fila {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .payment-comprobante {
+    padding: 12px;
+  }
+
+  .payment-comprobante-total {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

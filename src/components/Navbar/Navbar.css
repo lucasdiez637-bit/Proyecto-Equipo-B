@@ -64,6 +64,28 @@
 .site-navbar__link:hover {
   color: var(--rc-white);
 }
+
+/* Estilo para el botón de Newsletter en el Navbar */
+.site-navbar__newsletter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 12px;
+  background: transparent;
+  border: none;
+  color: var(--rc-text-soft);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s ease, transform 0.2s ease;
+  font-family: inherit;
+}
+.site-navbar__newsletter-btn:hover {
+  color: var(--rc-red);
+}
+
 .site-navbar__button {
   display: inline-flex;
   justify-content: center;
@@ -104,11 +126,13 @@
 }
 .site-navbar__brand:focus-visible,
 .site-navbar__link:focus-visible,
+.site-navbar__newsletter-btn:focus-visible,
 .site-navbar__button:focus-visible,
 .site-navbar__toggle:focus-visible {
   outline: 3px solid var(--rc-white);
   outline-offset: 4px;
 }
+
 @media (max-width: 991.98px) {
   .site-navbar__container {
     flex-wrap: wrap;
@@ -138,12 +162,18 @@
     width: 100%;
     padding: 8px 0;
   }
+  .site-navbar__newsletter-btn {
+    width: 100%;
+    padding: 8px 0;
+    justify-content: flex-start;
+  }
   .site-navbar__button {
     width: 100%;
   }
 }
 @media (prefers-reduced-motion: reduce) {
   .site-navbar__link,
+  .site-navbar__newsletter-btn,
   .site-navbar__button {
     transition: none;
   }

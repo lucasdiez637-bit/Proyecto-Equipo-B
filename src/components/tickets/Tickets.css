@@ -245,3 +245,72 @@
   text-align: center;
   text-decoration: none;
 }
+/* Responsive para precios y tarjetas */
+.ticket-prices {
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.ticket-price {
+  min-width: 0;
+  max-width: 100%;
+  font-size: clamp(30px, 5vw, 56px);
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  overflow-wrap: anywhere;
+}
+
+.ticket-previous-price {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.ticket-card {
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (max-width: 360px) {
+  .tickets {
+    padding: 64px 12px 0;
+  }
+
+  .tickets-title {
+    font-size: 32px;
+    overflow-wrap: break-word;
+  }
+
+  .ticket-card {
+    padding: 16px;
+    gap: 14px;
+    border-radius: 22px;
+  }
+
+  .ticket-name {
+    font-size: 20px;
+  }
+
+  .ticket-price {
+    font-size: clamp(26px, 9vw, 34px);
+    letter-spacing: -1px;
+  }
+
+  .ticket-previous-price {
+    font-size: 13px;
+  }
+
+  .ticket-description,
+  .ticket-benefits {
+    font-size: 14px;
+  }
+
+  .ticket-button {
+    min-height: 46px;
+    padding: 10px 12px;
+    font-size: 15px;
+    white-space: normal;
+  }
+}
