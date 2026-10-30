@@ -59,7 +59,7 @@ export default function StepPayment({ total, processing, onPay, onBack }: Props)
       <h3>Pago</h3>
 
       <p className="payment-nota">
-        Pago simulado: no se realiza ningún cobro real y los datos de la tarjeta no se guardan.
+        Pago simulado: no se realiza ningún cobro real y los datos de la tarjeta no se guardan, Tarjeta de ejemplo: 4242 4242 4242 4242.
       </p>
 
       <div className="payment-campo">
